@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=krita_flash
+X-Python-2-Compatible=false
+X-Krita-Manual=Manual.html
+Name=Krita Flash
+Comment=Adds Gemini 2.0 Native Image Output to Krita

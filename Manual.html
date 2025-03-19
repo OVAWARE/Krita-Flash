@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KritaFlash - Gemini Image Generation Plugin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .logo img {
+            max-width: 200px;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .example {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .example img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .steps {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .steps ol {
+            margin-left: 20px;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .tip {
+            background-color: #e1f5fe;
+            padding: 15px;
+            border-left: 4px solid #03a9f4;
+            margin: 20px 0;
+        }
+        .warning {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>KritaFlash Manual</h1>
+    
+    
+    <div class="section">
+        <h2>Introduction</h2>
+        <p>
+            KritaFlash is a powerful plugin for Krita that leverages Google's Gemini AI to transform your artwork 
+            with intelligent image generation. With just a text prompt, you can apply creative transformations 
+            to your existing artwork.
+        </p>
+        <div class="example">
+            <p><strong>Example Transformation:</strong> Original artwork → Transformed with prompt "Convert to pencil sketch style"</p>
+            <!-- Example before/after images -->
+            <img src="./examples/pencil_sketch.png" alt="Before and After Example">
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Installation</h2>
+        <div class="steps">
+            <ol>
+                <li>Download the KritaFlash plugin package.</li>
+                <li>Enable the plugin by going to <code>Settings</code> → <code>Python Plugin Manager</code> → <code>KritaFlash</code>.</li>
+                <li>Restart Krita.</li>
+                <li> Ensure that the KritaFlash docker is enabled.</li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Setting Up Your API Key</h2>
+        <p>
+            KritaFlash requires a Google Gemini API key to function. This key is not provided with the plugin and must be
+            obtained from Google AI Studio.
+        </p>
+        
+        <h3>Getting a Gemini API Key</h3>
+        <div class="steps">
+            <ol>
+                <li>Visit <a href="https://aistudio.google.com/app/apikey" target="_blank">https://aistudio.google.com/app/apikey</a>.</li>
+                <li>Sign in with your Google account.</li>
+                <li>Click on "Create API Key" button.</li>
+                <li>Copy the generated API key to your clipboard.</li>
+            </ol>
+        </div>
+        <div class="warning">
+            <p><strong>Important:</strong> Keep your API key private. Do not share your key with others or include it in publicly accessible code.</p>
+        </div>
+        
+        <h3>Configuring the API Key in KritaFlash</h3>
+        <div class="steps">
+            <ol>
+                <li>In Krita, open the KritaFlash docker.</li>
+                <li>Click the "Configure API Key" button.</li>
+                <li>Paste your Gemini API key into the dialog box.</li>
+                <li>Click "Save".</li>
+            </ol>
+        </div>
+        
+        <h3>Alternative Configuration Methods</h3>
+        <p>
+            You can also set up your API key as an environment variable named <code>GEMINI_API_KEY</code>. This method is 
+            preferable for system-wide configuration or if you're working in a shared environment.
+        </p>
+        <table>
+            <tr>
+                <th>Operating System</th>
+                <th>Setting Environment Variable</th>
+            </tr>
+            <tr>
+                <td>Windows</td>
+                <td>
+                    <code>setx GEMINI_API_KEY "your_api_key_here"</code> (Command Prompt)<br>
+                    Or via System Properties → Environment Variables
+                </td>
+            </tr>
+            <tr>
+                <td>macOS/Linux</td>
+                <td>
+                    Add <code>export GEMINI_API_KEY="your_api_key_here"</code> to your <code>.bashrc</code> or <code>.zshrc</code> file
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>Using KritaFlash</h2>
+        
+        <h3>Basic Usage</h3>
+        <div class="steps">
+            <ol>
+                <li>Open or create an image in Krita.</li>
+                <li>Make sure the KritaFlash docker is visible (if not, go to <code>Settings</code> → <code>Dockers</code> → <code>KritaFlash</code>).</li>
+                <li>Enter a descriptive prompt in the text box, such as "convert to oil painting style" or "add a cosmic background".</li>
+                <li>Click the "Generate Image" button.</li>
+                <li>Wait for the processing to complete.</li>
+                <li>The generated image will be added as a new layer in your document.</li>
+            </ol>
+        </div>
+        
+        
+        <h3>Prompt Tips</h3>
+        <div class="tip">
+            <p><strong>Effective Prompts:</strong> Be specific and descriptive in your prompts. Instead of "make it better" try "enhance contrast and add subtle purple lighting from the top right".</p>
+        </div>
+        <table>
+            <tr>
+                <th>Example Prompts</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>"Convert to watercolor style with soft edges"</td>
+                <td>Transforms the image to simulate watercolor painting</td>
+            </tr>
+            <tr>
+                <td>"Add dramatic lighting from the left side"</td>
+                <td>Enhances the image with directional lighting effects</td>
+            </tr>
+            <tr>
+                <td>"Make it look like a scene from cyberpunk future"</td>
+                <td>Applies futuristic cyberpunk aesthetic</td>
+            </tr>
+            <tr>
+                <td>"Add a forest background with fog"</td>
+                <td>Replaces or adds a new environment around your subject</td>
+            </tr>
+            <tr>
+                <td>"Color in the image"</td>
+                <td>Attempts to color the image</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>Example Transformations</h2>
+        <p>Below are examples of what KritaFlash can do with different prompts:</p>
+        
+        <div class="example">
+            <p><strong>Original artwork → "Convert to pencil sketch style"</strong></p>
+            <img src="./examples/pencil_sketch.png" alt="Pencil Sketch Example">
+        </div>
+        
+        <div class="example">
+            <p><strong>Original artwork → "Add dramatic sunset lighting"</strong></p>
+            <img src="./examples/sunset.png" alt="Sunset Lighting Example">
+        </div>
+        
+        <div class="example">
+            <p><strong>Original artwork → "Transform into anime style"</strong></p>
+            <img src="./examples/anime.png" alt="Anime Style Example">
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Troubleshooting</h2>
+        
+        <h3>Common Issues</h3>
+        <table>
+            <tr>
+                <th>Problem</th>
+                <th>Possible Solution</th>
+            </tr>
+            <tr>
+                <td>"API key not configured" error</td>
+                <td>Click the "Configure API Key" button and enter a valid Gemini API key.</td>
+            </tr>
+            <tr>
+                <td>Generation fails or times out</td>
+                <td>
+                    <ul>
+                        <li>Check your internet connection</li>
+                        <li>Verify your API key is valid</li>
+                        <li>Try a simpler prompt</li>
+                        <li>Try a smaller image size</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Generated image doesn't appear as a new layer</td>
+                <td>
+                    Check that your document is properly saved and you have sufficient permissions to create files in the output directory.
+                </td>
+            </tr>
+            <tr>
+                <td>KritaFlash docker doesn't appear</td>
+                <td>Go to <code>Settings</code> → <code>Dockers</code> and make sure KritaFlash is checked.</td>
+            </tr>
+        </table>
+        
+        <h3>API Usage Limitations</h3>
+        <div class="warning">
+            <p>Google Gemini API has usage limits based on your account tier. Free tier users may have restrictions on the number of requests per minute or per day. Check the <a href="https://ai.google.dev/pricing" target="_blank">Google AI pricing page</a> for current limits and pricing information.</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>KritaFlash v1.0 | <a href="https://github.com/OVAWARE/Krita-Flash" target="_blank">GitHub Repository</a></p>
+    </div>
+</body>
+</html>
