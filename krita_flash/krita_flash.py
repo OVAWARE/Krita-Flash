@@ -59,6 +59,31 @@ class DockerTemplate(DockWidget):
         self.text_box.setMinimumHeight(30)
         input_layout.addWidget(self.text_box)
         
+        # Add temperature slider
+        temp_container = QWidget()
+        temp_layout = QHBoxLayout(temp_container)
+        temp_layout.setContentsMargins(0, 5, 0, 0)
+        
+        temp_label = QLabel("Temperature:")
+        temp_layout.addWidget(temp_label)
+        
+        from PyQt5.QtWidgets import QSlider
+        self.temp_slider = QSlider(Qt.Horizontal)
+        self.temp_slider.setMinimum(0)
+        self.temp_slider.setMaximum(40)  # 0, 0.5, 1.0, 1.5, 2.0 (5 steps)
+        self.temp_slider.setValue(1)    # Default to 0.5 (index 1)
+        self.temp_slider.setTickPosition(QSlider.TicksBelow)
+        self.temp_slider.setTickInterval(1)
+        temp_layout.addWidget(self.temp_slider)
+        
+        self.temp_value_label = QLabel("0.40")  # Default display value
+        temp_layout.addWidget(self.temp_value_label)
+        
+        # Connect slider value change to update the label
+        self.temp_slider.valueChanged.connect(self.update_temp_label)
+        
+        input_layout.addWidget(temp_container)
+        
         # Add the input frame to the main layout
         self.layout.addWidget(input_frame)
         
@@ -168,6 +193,12 @@ class DockerTemplate(DockWidget):
         f.write(data)
         f.close()
 
+    def update_temp_label(self):
+        """Update the temperature label when slider value changes"""
+        # Convert slider value (0-4) to temperature (0.0-2.0)
+        value = self.temp_slider.value() * 0.05
+        self.temp_value_label.setText(f"{value:.2f}")
+        
     def generate_image(self, input_image_path, prompt_text):
         try:
             # Get API key from configuration
@@ -179,6 +210,9 @@ class DockerTemplate(DockWidget):
             client = genai.Client(
                 api_key=api_key,
             )
+
+            # Get the temperature value from the slider
+            temperature = self.temp_slider.value() * 0.05
 
             files = [
                 # Make the file available in local system working directory
@@ -213,7 +247,7 @@ class DockerTemplate(DockWidget):
                 ),
             ]
             generate_content_config = types.GenerateContentConfig(
-                temperature=0.4,
+                temperature=temperature,
                 top_p=0.95,
                 top_k=40,
                 max_output_tokens=8192,
