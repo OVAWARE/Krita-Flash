@@ -1,7 +1,5 @@
 # KritaFlash - Gemini Image Generation Plugin
 
-![KritaFlash Logo](./logo.png)
-
 ## Introduction
 KritaFlash is a powerful plugin for Krita that leverages Google's Gemini AI to transform your artwork with intelligent image generation. With just a text prompt, you can apply creative transformations to your existing artwork.
 
