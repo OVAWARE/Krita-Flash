@@ -9,7 +9,7 @@ from google import genai
 from google.genai import types
 import datetime
 
-DOCKER_TITLE = 'KritaFlash'
+DOCKER_TITLE = 'Krita Flash Editor'
 
 class DockerTemplate(DockWidget):
 
@@ -215,33 +215,29 @@ class DockerTemplate(DockWidget):
             temperature = self.temp_slider.value() * 0.05
 
             files = [
-                # Make the file available in local system working directory
                 client.files.upload(file=input_image_path),
             ]
             
-            # Use the same model as AIDrawer, or try this specific model name
             model = "gemini-2.0-flash-exp-image-generation"
             
-            # Simplified request structure similar to AIDrawer
             contents = [
                 types.Content(
                     role="user",
                     parts=[
-                        types.Part.from_text(text=prompt_text),
                         types.Part.from_uri(
                             file_uri=files[0].uri,
                             mime_type=files[0].mime_type,
                         ),
+                        types.Part.from_text(text=prompt_text),
                     ],
                 ),
-            ]
+            ] # Send files, then send the prompt, if getting bad results you can try reordering it, iv tried a few different ways and this one works best for now
             
-            # Use generation config similar to AIDrawer
             generate_content_config = types.GenerateContentConfig(
                 temperature=temperature,
-                top_p=0.95,
-                top_k=40,
-                max_output_tokens=8192,
+                top_p=1,
+                top_k=32,
+                max_output_tokens=4096,
                 response_modalities=[
                     "image",
                     "text",
@@ -255,7 +251,6 @@ class DockerTemplate(DockWidget):
                 response_mime_type="text/plain",
             )
 
-            # Get the project directory from the active document
             app = Krita.instance()
             document = app.activeDocument()
             
@@ -384,3 +379,4 @@ class DockerTemplate(DockWidget):
                 print("No active document to add layer to")
         except Exception as e:
             print(f"Error adding image as layer: {str(e)}")
+
