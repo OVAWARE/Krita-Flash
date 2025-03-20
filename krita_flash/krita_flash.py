@@ -218,34 +218,25 @@ class DockerTemplate(DockWidget):
                 # Make the file available in local system working directory
                 client.files.upload(file=input_image_path),
             ]
+            
+            # Use the same model as AIDrawer, or try this specific model name
             model = "gemini-2.0-flash-exp-image-generation"
+            
+            # Simplified request structure similar to AIDrawer
             contents = [
                 types.Content(
                     role="user",
                     parts=[
+                        types.Part.from_text(text=prompt_text),
                         types.Part.from_uri(
                             file_uri=files[0].uri,
                             mime_type=files[0].mime_type,
                         ),
-                        types.Part.from_text(text="edit this"),
-                    ],
-                ),
-                types.Content(
-                    role="model",
-                    parts=[
-                        types.Part.from_uri(
-                            file_uri=files[0].uri,  # This needs to be a reference to the response file
-                            mime_type=files[0].mime_type,
-                        ),
-                    ],
-                ),
-                types.Content(
-                    role="user",
-                    parts=[
-                        types.Part.from_text(text=prompt_text),
                     ],
                 ),
             ]
+            
+            # Use generation config similar to AIDrawer
             generate_content_config = types.GenerateContentConfig(
                 temperature=temperature,
                 top_p=0.95,
@@ -393,4 +384,3 @@ class DockerTemplate(DockWidget):
                 print("No active document to add layer to")
         except Exception as e:
             print(f"Error adding image as layer: {str(e)}")
-
